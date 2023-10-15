@@ -9,7 +9,8 @@
             "type": "go",
             "request": "launch",
             "mode": "auto",
-            "program": "${workspaceFolder}/cmd/pp"
+            "program": "${workspaceFolder}/cmd/pp",
+            "args": ["--multicore","true"]
         }
     ]
 }
