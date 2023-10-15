@@ -1,42 +1,13 @@
 package main
 
-import (
-	"flag"
-	"fmt"
-	"log"
-
-	"github.com/panjf2000/gnet/v2"
-)
-
-type echoServer struct {
-	gnet.BuiltinEventEngine
-
-	eng       gnet.Engine
-	addr      string
-	multicore bool
-}
-
-func (es *echoServer) OnBoot(eng gnet.Engine) gnet.Action {
-	es.eng = eng
-	log.Printf("echo server with multi-core=%t is listening on %s\n", es.multicore, es.addr)
-	return gnet.None
-}
-
-func (es *echoServer) OnTraffic(c gnet.Conn) gnet.Action {
-	buf, _ := c.Next(-1)
-	c.Write(buf)
-	log.Printf("echo server with multi-core=%t is listening on %s\n", es.multicore, es.addr)
-	return gnet.None
-}
+import "github.com/gofiber/fiber/v2"
 
 func main() {
-	var port int
-	var multicore bool
+	app := fiber.New()
 
-	// Example command: go run echo.go --port 9000 --multicore=true
-	flag.IntVar(&port, "port", 9000, "--port 9000")
-	flag.BoolVar(&multicore, "multicore", false, "--multicore true")
-	flag.Parse()
-	echo := &echoServer{addr: fmt.Sprintf("tcp://0.0.0.0:%d", port), multicore: multicore}
-	log.Fatal(gnet.Run(echo, echo.addr, gnet.WithMulticore(multicore)))
+	app.Get("/", func(c *fiber.Ctx) error {
+		return c.SendString("Hello, World!")
+	})
+
+	app.Listen(":9000")
 }
