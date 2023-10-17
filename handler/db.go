@@ -3,6 +3,7 @@ package handler
 import (
 	"encoding/json"
 	"os"
+	"portproxy/config"
 )
 
 type Url struct {
@@ -14,11 +15,9 @@ type Url struct {
 	Query  string `json:"query"`  // encoded query values, without '?'
 }
 
-var db_file = "./data/db.json"
-
 func GetUrls() (urls map[string]Url) {
 	urls = map[string]Url{}
-	data, err := os.ReadFile(db_file)
+	data, err := os.ReadFile(config.DB_FILE)
 	if err == nil {
 		json.Unmarshal(data, &urls)
 	}
@@ -32,7 +31,7 @@ func SetUrls(u Url) {
 	if err != nil {
 		panic(err)
 	}
-	err = os.WriteFile(db_file, data, os.ModePerm)
+	err = os.WriteFile(config.DB_FILE, data, os.ModePerm)
 	if err != nil {
 		panic(err)
 	}

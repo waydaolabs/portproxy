@@ -1,16 +1,24 @@
 package main
 
 import (
+	"flag"
+	"portproxy/config"
 	"portproxy/handler"
 
 	"github.com/gofiber/fiber/v2"
 )
 
+func init() {
+	flag.StringVar(&config.DB_FILE, "db", config.DB_FILE, "--db "+config.DB_FILE)
+	flag.StringVar(&config.UrlBuildPath, "url", config.UrlBuildPath, "--url "+config.UrlBuildPath)
+	flag.Parse()
+}
+
 func main() {
 	app := fiber.New()
 
-	app.Post("/urlBuildJJF7_2Tqm-zh4dbF", handler.UrlBuild)
-	app.Get("/urlBuildJJF7_2Tqm-zh4dbF", handler.GetUrlBuild)
+	app.Post(config.UrlBuildPath, handler.UrlBuild)
+	app.Get(config.UrlBuildPath, handler.GetUrlBuild)
 	app.All("*", handler.Proxy)
 
 	app.Listen(":9000")
