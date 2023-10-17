@@ -40,7 +40,7 @@ func Proxy(c *fiber.Ctx) (err error) {
 	if websocket.IsWebSocketUpgrade(c) {
 		uu.Scheme = "ws" + uu.Scheme
 		return websocket.New(func(c *websocket.Conn) {
-
+				
 		})(c)
 	} else {
 		uu.Scheme = "http" + uu.Scheme
