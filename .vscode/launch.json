@@ -10,7 +10,8 @@
             "request": "launch",
             "mode": "auto",
             "program": "${workspaceFolder}/cmd/pp",
-            "args": ["--multicore","true"]
+            "args": ["--multicore","true"],
+            "cwd": "${workspaceFolder}"
         }
     ]
 }
