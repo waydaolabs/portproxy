@@ -31,6 +31,12 @@ func Proxy(c *fiber.Ctx) (err error) {
 
 	uu.Path, err = url.JoinPath(uu.Path, c.Params("*"))
 
+	queries := uu.Query()
+	for k, v := range c.Queries() {
+		queries.Add(k, v)
+	}
+	uu.RawQuery = queries.Encode()
+
 	if websocket.IsWebSocketUpgrade(c) {
 		uu.Scheme = "ws" + uu.Scheme
 		return websocket.New(func(c *websocket.Conn) {
@@ -42,6 +48,8 @@ func Proxy(c *fiber.Ctx) (err error) {
 		a := fiber.AcquireAgent()
 
 		req := a.Request()
+		// set request body
+		req.SetBody(c.BodyRaw())
 		req.Header.SetMethod(c.Method())
 		for k, v := range c.GetReqHeaders() {
 			switch strings.ToLower(k) {
