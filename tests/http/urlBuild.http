@@ -2,10 +2,16 @@
 POST http://127.0.0.1:9000/urlBuildJJF7_2Tqm-zh4dbF
 Content-Type: application/json
 
-{"host":"www.baidu.com","id":"siyuan"}
+{"host":"www.qq.com","id":"127","ssl":true}
 
 
 ### 获取 Url
 GET http://127.0.0.1:9000/urlBuildJJF7_2Tqm-zh4dbF
 Content-Type: application/json
  
+
+
+
+### 获取 Url
+GET http://127.0.0.1:9000
+Content-Type: application/json

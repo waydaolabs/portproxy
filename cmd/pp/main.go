@@ -9,9 +9,11 @@ import (
 )
 
 func init() {
+	flag.Bool("multicore", false, "")
 	flag.StringVar(&config.DB_FILE, "db", config.DB_FILE, "--db "+config.DB_FILE)
 	flag.StringVar(&config.UrlBuildPath, "url", config.UrlBuildPath, "--url "+config.UrlBuildPath)
 	flag.Parse()
+
 }
 
 func main() {
