@@ -1,4 +1,4 @@
-module portproxy
+module github.com/waydaolabs/portproxy
 
 go 1.21.2
 
