@@ -1,6 +1,6 @@
 module github.com/waydaolabs/portproxy
 
-go 1.21.2
+go 1.21
 
 require (
 	github.com/fasthttp/websocket v1.5.4
