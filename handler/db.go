@@ -3,7 +3,8 @@ package handler
 import (
 	"encoding/json"
 	"os"
-	"portproxy/config"
+
+	"github.com/waydaolabs/portproxy/config"
 )
 
 type Url struct {

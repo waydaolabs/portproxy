@@ -2,8 +2,9 @@ package main
 
 import (
 	"flag"
-	"portproxy/config"
-	"portproxy/handler"
+
+	"github.com/waydaolabs/portproxy/config"
+	"github.com/waydaolabs/portproxy/handler"
 
 	"github.com/gofiber/fiber/v2"
 )
