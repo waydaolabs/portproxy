@@ -102,7 +102,7 @@ func Proxy(c *fiber.Ctx) (err error) {
 				a.UserAgent(v)
 			default:
 				req.Header.Add(k, v)
-				log.Println("heaer:", k, "=>", v)
+				log.Println("request heaer:", k, "=>", v)
 			}
 
 		}
@@ -117,6 +117,7 @@ func Proxy(c *fiber.Ctx) (err error) {
 
 		code, body, _ := a.Bytes()
 		resp.Header.VisitAll(func(key, value []byte) {
+			log.Println("response heaer:", key, "=>", value)
 			c.Response().Header.Add(string(key), string(value))
 		})
 		c.Status(code)

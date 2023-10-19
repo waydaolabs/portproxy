@@ -2,7 +2,7 @@
 POST http://127.0.0.1:9000/urlBuildJJF7_2Tqm-zh4dbF
 Content-Type: application/json
 
-{"host":"www.qq.com","id":"127","ssl":true}
+{"host":"pi.anycps.com:8002","id":"ominous-sniffle-g4q77pgx49g7f9664-9000","ssl":false}
 
 
 ### 获取 Url
