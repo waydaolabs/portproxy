@@ -5,8 +5,10 @@ import (
 	"net/url"
 	"strings"
 
+	fastwebsocket "github.com/fasthttp/websocket"
 	"github.com/gofiber/contrib/websocket"
 	"github.com/gofiber/fiber/v2"
+	"golang.org/x/sync/errgroup"
 )
 
 func Proxy(c *fiber.Ctx) (err error) {
@@ -40,7 +42,46 @@ func Proxy(c *fiber.Ctx) (err error) {
 	if websocket.IsWebSocketUpgrade(c) {
 		uu.Scheme = "ws" + uu.Scheme
 		return websocket.New(func(c *websocket.Conn) {
-				
+			go func(c *websocket.Conn) {
+				wg := new(errgroup.Group)
+
+				rc, _, err := fastwebsocket.DefaultDialer.Dial(uu.String(), nil)
+				if err != nil {
+					log.Println("dial error", err, "url", uu.String())
+					return
+				}
+				defer rc.Close()
+
+				wg.Go(func() error {
+					for {
+						messageType, message, err := rc.ReadMessage()
+						if err != nil {
+							return err
+						}
+						err = c.WriteMessage(messageType, message)
+
+						if err != nil {
+							return err
+						}
+					}
+				})
+				wg.Go(func() error {
+					for {
+						messageType, message, err := c.ReadMessage()
+						if err != nil {
+							return err
+						}
+						err = rc.WriteMessage(messageType, message)
+						if err != nil {
+							return err
+						}
+					}
+				})
+				err = wg.Wait()
+				if err != nil {
+					log.Println("ws error", err)
+				}
+			}(c)
 		})(c)
 	} else {
 		uu.Scheme = "http" + uu.Scheme
