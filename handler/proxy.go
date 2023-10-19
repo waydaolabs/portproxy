@@ -54,6 +54,7 @@ func Proxy(c *fiber.Ctx) (err error) {
 		for k, v := range c.GetReqHeaders() {
 			switch strings.ToLower(k) {
 			case "connection":
+				continue
 			case "host":
 				req.Header.SetHost(v)
 			case "user-agent":
