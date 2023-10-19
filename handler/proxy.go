@@ -42,7 +42,7 @@ func Proxy(c *fiber.Ctx) (err error) {
 	if websocket.IsWebSocketUpgrade(c) {
 		uu.Scheme = "ws" + uu.Scheme
 		return websocket.New(func(c *websocket.Conn) {
-			go func(c *websocket.Conn) {
+			func(c *websocket.Conn) {
 				wg := new(errgroup.Group)
 
 				rc, _, err := fastwebsocket.DefaultDialer.Dial(uu.String(), nil)
@@ -56,11 +56,13 @@ func Proxy(c *fiber.Ctx) (err error) {
 					for {
 						messageType, message, err := rc.ReadMessage()
 						if err != nil {
+							log.Println("remote read error", err)
 							return err
 						}
 						err = c.WriteMessage(messageType, message)
 
 						if err != nil {
+							log.Println("client write error", err)
 							return err
 						}
 					}
@@ -69,10 +71,12 @@ func Proxy(c *fiber.Ctx) (err error) {
 					for {
 						messageType, message, err := c.ReadMessage()
 						if err != nil {
+							log.Println("client read error", err)
 							return err
 						}
 						err = rc.WriteMessage(messageType, message)
 						if err != nil {
+							log.Println("remote write error", err)
 							return err
 						}
 					}
@@ -117,7 +121,7 @@ func Proxy(c *fiber.Ctx) (err error) {
 
 		code, body, _ := a.Bytes()
 		resp.Header.VisitAll(func(key, value []byte) {
-			log.Println("response heaer:", key, "=>", value)
+			log.Println("response heaer:", string(key), "=>", string(value))
 			c.Response().Header.Add(string(key), string(value))
 		})
 		c.Status(code)

@@ -2,7 +2,8 @@
 POST http://127.0.0.1:9000/urlBuildJJF7_2Tqm-zh4dbF
 Content-Type: application/json
 
-{"host":"pi.anycps.com:8002","id":"ominous-sniffle-g4q77pgx49g7f9664-9000","ssl":false}
+# https://ethereum.blockpi.network/v1/rpc/e4676d6d009cfa1d47a486602d2294479edd4b73
+{"host":"ethereum.blockpi.network","id":"ominous-sniffle-g4q77pgx49g7f9664-9000","ssl":true}
 
 
 ### 获取 Url
